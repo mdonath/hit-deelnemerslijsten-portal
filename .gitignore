@@ -1,3 +1,18 @@
+# ----------------------
+# My own additions below
+# ----------------------
+
+*.pdf
+# prevent leaking private data
+*.xlsx
+hit.yaml
+input
+output
+
+# ----------------------
+# GitHub generated below
+# ----------------------
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
