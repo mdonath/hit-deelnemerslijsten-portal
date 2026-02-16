@@ -3,21 +3,41 @@ import pandas as pd
 
 from config import current_property
 
-INPUT_DIR = 'input'
 
 def load(hit_config):
+    """
+    Laadt het Excel-bestand met de inschrijvingen en bewerkt deze zodat deze makkelijker te gebruiken is.
+    
+    :param hit_config: Description
+    """
     input_path = current_property(hit_config, 'input_path')
     input_file = [f for f in os.listdir(input_path) if f.endswith('.xlsx')][0]
     df = pd.read_excel(os.path.join(input_path, input_file))
 
-    # Preprocess the data by dropping unnecessary columns and renaming the remaining ones
-    df = preprocess(df)
+    preprocess(df)
 
     return df
 
+
 def preprocess(df):
-    # Drop unnecessary columns
-    df = df.drop(columns=[
+    """
+    Bewerkt de data zodat deze minder data bevat die niet relevant is voor de analyse, en zodat de kolomnamen makkelijker te gebruiken zijn.
+    
+    :param df: DataFrame met de ruwe data van de inschrijvingen.
+    :return: DataFrame met de bewerkte data.
+    """
+    drop_columns(df)
+    rename_columns(df)
+
+
+def drop_columns(df):
+    """
+    Verwijdert onnodige kolommen.
+    
+    :param df: DataFrame met de ruwe data van de inschrijvingen.
+    :return: DataFrame zonder onnodige kolommen.
+    """
+    df.drop(columns=[
         'Registration ID',
         'Registration Status',
         'Payment Status',
@@ -32,9 +52,16 @@ def preprocess(df):
         'Gegevens kind',
         'Selecteer een subgroepje',
         'Hoeveel deelnemers komen er in je subgroepje?'
-    ])
+    ], inplace=True)
 
-    # Rename columns for easier access
+
+def rename_columns(df):
+    """
+    Hernoemt kolommen zodat ze makkelijker te gebruiken zijn.
+    
+    :param df: DataFrame met de ruwe data van de inschrijvingen.
+    :return: DataFrame met de hernoemde kolommen.
+    """
     df.rename(columns={
         'Site Location': 'Plaats',
         'Event Name': 'Kamp',
@@ -49,6 +76,4 @@ def preprocess(df):
         'Heeft de deelnemer een allergie, lichamelijke of geestelijke beperkingen of gebruikt hij/zij medicijnen?.1': 'Aandachtspunten.1',
         'Heeft de deelnemer een allergie, lichamelijke of geestelijke beperkingen of gebruikt hij/zij medicijnen?.2': 'Aandachtspunten.2',
     }, inplace=True)
-    
-    return df
 

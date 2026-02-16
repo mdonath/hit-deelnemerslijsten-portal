@@ -5,7 +5,7 @@
 *.pdf
 # prevent leaking private data
 *.xlsx
-hit.yaml
+*.yaml
 input
 output
 
