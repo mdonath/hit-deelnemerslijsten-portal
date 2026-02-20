@@ -6,7 +6,7 @@ from log import log_finished
 
 
 def main():
-    hit_config = read_config('hit2.yaml')
+    hit_config = read_config('hit-prod.yaml')
 
     df = load(hit_config)
     df = transform(df)

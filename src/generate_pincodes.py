@@ -16,15 +16,14 @@ def main():
         'Zeeland'
     ]
 
-    hit_config = read_config()
+    hit_config = read_config('hit.yaml')
     jaar = current_year(hit_config)
     new_pin_codes = {plaats: str(random_with_N_digits(6)) for plaats in plaatsen}
-    new_full_passwords = {f"{plaats}_full": f"HIT-{plaats}-{jaar}-{new_pin_codes[plaats]}" for plaats in plaatsen}
     
-    current_property(hit_config, 'pincodes').update(new_pin_codes | new_full_passwords)
+    current_property(hit_config, 'pincodes').update(new_pin_codes)
 
-    with open('hit2.yaml', 'w') as f:
-        yaml.dump(hit_config, f)
+    with open('hit-prod.yaml', 'w') as f:
+        yaml.dump(hit_config, f, sort_keys=False)
 
 
 def random_with_N_digits(n):

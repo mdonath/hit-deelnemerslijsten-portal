@@ -22,3 +22,11 @@ def write_password_file(output_path, passwords, hit_config):
         'Password': list(passwords.values()),
     })
     df.to_markdown(os.path.join(output_path, current_property(hit_config, 'passwords_file')), index=False)
+
+
+def write_plaats_password_file(output_path, passwords, hit_config):
+    df = pd.DataFrame({
+        'Plaats': list(passwords.keys()),
+        'Password': list(passwords.values()),
+    })
+    df.to_markdown(os.path.join(output_path, current_property(hit_config, 'plaats_passwords_file')), index=False)

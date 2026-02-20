@@ -4,7 +4,7 @@ import shutil
 from pathvalidate import sanitize_filename
 from config import current_privacy_doc_file, current_property
 from log import log_ok
-from passwords import create_password_kamp, create_password_plaats, write_password_file
+from passwords import create_password_kamp, create_password_plaats, write_password_file, write_plaats_password_file
 
 
 COMPRESSION_LEVEL = 1
@@ -16,6 +16,8 @@ def write(df, hit_config):
     # Totaalbestand met alles
     df.to_excel(os.path.join(output_path, 'totaal.xlsx'), index=False)
     log_ok("Totaal bestand is klaar")
+
+    plaats_passwords = {}
 
     # Maak bestand per plaats
     for plaats, plaats_deelnemers in df.groupby('Plaats'):
@@ -29,6 +31,8 @@ def write(df, hit_config):
 
         password = create_password_plaats(plaats, hit_config)
         passwords['C-team'] = password
+        plaats_passwords[plaats] = password
+
         zip_excels(output_path_plaats, output_path_plaats, f'C-team HIT {plaats}', password, hit_config)
 
         # Maak bestand per kamp
@@ -46,6 +50,7 @@ def write(df, hit_config):
 
         zip_zips(output_path, os.path.join(output_path, plaats), plaats, hit_config)
 
+        write_plaats_password_file(output_path, plaats_passwords, hit_config)
         log_ok(f"{plaats} is klaar met {len(per_kamp)} kampen")
 
 
